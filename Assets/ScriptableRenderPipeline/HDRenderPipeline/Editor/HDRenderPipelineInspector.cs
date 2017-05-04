@@ -73,7 +73,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             public readonly GUIContent[] debugViewLightingStrings = { new GUIContent("None"), new GUIContent("Diffuse Lighting"), new GUIContent("Specular Lighting"), new GUIContent("Visualize Cascades") };
             public readonly int[] debugViewLightingValues = { (int)DebugLightingMode.None, (int)DebugLightingMode.DiffuseLighting, (int)DebugLightingMode.SpecularLighting, (int)DebugLightingMode.VisualizeCascade };
             public readonly GUIContent shadowDebugVisualizationMode = new GUIContent("Shadow Maps Debug Mode");
-            public readonly GUIContent shadowDebugVisualizeShadowIndex = new GUIContent("Visualize Shadow Index");            
+            public readonly GUIContent shadowDebugVisualizeShadowIndex = new GUIContent("Visualize Shadow Index");
             public readonly GUIContent lightingDebugOverrideSmoothness = new GUIContent("Override Smoothness");
             public readonly GUIContent lightingDebugOverrideSmoothnessValue = new GUIContent("Smoothness Value");
             public readonly GUIContent lightingDebugAlbedo = new GUIContent("Lighting Debug Albedo");
