@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: defdd8af1514c114eb775323c34db252, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  lightTargetParametersList:
+  - name: Red
+    Yaw: 70
+    Pitch: -17.5
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: -0.05, y: 0, z: 0.1}
+    mode: 2
+    range: 4
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 1, g: 0.24264705, b: 0.24264705, a: 1}
+    intensity: 75
+    indirectIntensity: 1
+    lightAngle: 9
+    shadows: 2
+    shadowQuality: 2
+    ShadowNearClip: 1.68
+    shadowBias: 0
+    lightCookie: {fileID: 0}
+    drawGizmo: 1
+  - name: Blue
+    Yaw: -109
+    Pitch: -48.1
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: 0, y: 0, z: 0}
+    mode: 2
+    range: 3
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 0.43382353, g: 0.6720081, b: 1, a: 1}
+    intensity: 60
+    indirectIntensity: 1
+    lightAngle: 30
+    shadows: 2
+    shadowQuality: 4
+    ShadowNearClip: 1.12
+    shadowBias: 0.005
+    lightCookie: {fileID: 0}
+    drawGizmo: 0
+  - name: Yellow
+    Yaw: 10
+    Pitch: -26.4
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: 0, y: 0, z: 0}
+    mode: 2
+    range: 3
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 1, g: 0.7977019, b: 0.3897059, a: 1}
+    intensity: 15
+    indirectIntensity: 1
+    lightAngle: 17.3
+    shadows: 2
+    shadowQuality: 4
+    ShadowNearClip: 1.52
+    shadowBias: 0.005
+    lightCookie: {fileID: 0}
+    drawGizmo: 0

@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: defdd8af1514c114eb775323c34db252, type: 3}
+  m_Name: daylight01
+  m_EditorClassIdentifier: 
+  lightTargetParametersList:
+  - name: RimLeft
+    Yaw: 120
+    Pitch: -34.1
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: -0.05, y: 0, z: 0.1}
+    mode: 2
+    range: 4
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 1, g: 0.9189517, b: 0.774, a: 1}
+    intensity: 75
+    indirectIntensity: 1
+    lightAngle: 9
+    shadows: 2
+    shadowQuality: 2
+    ShadowNearClip: 1.68
+    shadowBias: 0
+    lightCookie: {fileID: 0}
+    drawGizmo: 1
+  - name: Blue Rim
+    Yaw: -152
+    Pitch: -33.2
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: 0, y: 0, z: 0}
+    mode: 2
+    range: 3
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 0.741, g: 0.8499586, b: 1, a: 1}
+    intensity: 40
+    indirectIntensity: 1
+    lightAngle: 30
+    shadows: 2
+    shadowQuality: 4
+    ShadowNearClip: 1.12
+    shadowBias: 0.005
+    lightCookie: {fileID: 0}
+    drawGizmo: 0
+  - name: WarmKey
+    Yaw: 35
+    Pitch: -18.6
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: 0, y: 0, z: 0}
+    mode: 2
+    range: 3
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 1, g: 0.96552646, b: 0.896, a: 1}
+    intensity: 40
+    indirectIntensity: 1
+    lightAngle: 17.3
+    shadows: 2
+    shadowQuality: 4
+    ShadowNearClip: 1.52
+    shadowBias: 0.005
+    lightCookie: {fileID: 0}
+    drawGizmo: 0
+  - name: Fill
+    Yaw: 6
+    Pitch: 5.6
+    Roll: 0.1
+    linkToCameraRotation: 0
+    distance: 2
+    offset: {x: -0.05, y: 0, z: 0.1}
+    mode: 2
+    range: 3
+    useColorTemperature: 0
+    colorTemperature: 6500
+    colorFilter: {r: 0.97143453, g: 0.89100003, b: 1, a: 1}
+    intensity: 7
+    indirectIntensity: 1
+    lightAngle: 16.3
+    shadows: 2
+    shadowQuality: 3
+    ShadowNearClip: 1.42
+    shadowBias: 0.005
+    lightCookie: {fileID: 0}
+    drawGizmo: 1
