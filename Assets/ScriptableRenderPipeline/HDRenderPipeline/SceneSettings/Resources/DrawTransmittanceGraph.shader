@@ -22,7 +22,6 @@ Shader "Hidden/HDRenderPipeline/DrawTransmittanceGraph"
 
             #include "../../../ShaderLibrary/CommonMaterial.hlsl"
             #include "../../../ShaderLibrary/Common.hlsl"
-            #define USE_LEGACY_UNITY_MATRIX_VARIABLES
             #include "../../ShaderVariables.hlsl"
 
             //-------------------------------------------------------------------------------------

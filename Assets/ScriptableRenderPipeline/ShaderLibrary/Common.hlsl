@@ -366,13 +366,6 @@ float4 PositivePow(float4 base, float4 power)
     return pow(max(abs(base), float4(FLT_EPSILON, FLT_EPSILON, FLT_EPSILON, FLT_EPSILON)), power);
 }
 
-// Ref: https://twitter.com/SebAaltonen/status/878250919879639040
-// 2 mads (mad_sat and mad), faster than regular sign
-float3 FastSign(float x)
-{
-    return  saturate(x * FLT_MAX) * 2.0 - 1.0;
-}
-
 // ----------------------------------------------------------------------------
 // Texture utilities
 // ----------------------------------------------------------------------------
@@ -507,45 +500,41 @@ void UpdatePositionInput(float depthRaw, float depthVS, float3 positionWS, inout
     posInput.positionWS = positionWS;
 }
 
-float4 ComputeClipSpacePosition(float2 positionSS, float depthRaw)
-{
-#if UNITY_UV_STARTS_AT_TOP
-    positionSS.y = 1.0 - positionSS.y;
-#endif
-    return float4(positionSS * 2.0 - 1.0, depthRaw, 1.0);
-}
-
-float2 ComputeScreenSpacePosition(float4 positionCS)
-{
-    float2 positionSS = positionCS.xy * (rcp(positionCS.w) * 0.5) + 0.5;
-#if UNITY_UV_STARTS_AT_TOP
-    positionSS.y = 1.0 - positionSS.y;
-#endif
-    return positionSS;
-}
-
-float3 ComputeViewSpacePosition(float2 positionSS, float depthRaw, float4x4 invProjMatrix)
-{
-    float4 positionCS = ComputeClipSpacePosition(positionSS, depthRaw);
-    float4 positionVS = mul(invProjMatrix, positionCS);
-    // The view space uses a right-handed coordinate system.
-    positionVS.z = -positionVS.z;
-    return positionVS.xyz / positionVS.w;
-}
-
 // From deferred or compute shader
 // depth must be the depth from the raw depth buffer. This allow to handle all kind of depth automatically with the inverse view projection matrix.
 // For information. In Unity Depth is always in range 0..1 (even on OpenGL) but can be reversed.
-void UpdatePositionInput(float depthRaw, float4x4 invViewProjMatrix, float4x4 viewProjMatrix, inout PositionInputs posInput)
+// It may be necessary to flip the Y axis as the origin of the screen-space coordinate system
+// of Direct3D is at the top left corner of the screen, with the Y axis pointing downwards.
+void UpdatePositionInput(float depthRaw, float4x4 invViewProjMatrix, float4x4 viewProjMatrix,
+                         inout PositionInputs posInput, bool flipY = false)
 {
     posInput.depthRaw = depthRaw;
 
-    float4 positionCS   = ComputeClipSpacePosition(posInput.positionSS, depthRaw);
+    float2 screenSpacePos;
+    screenSpacePos.x = posInput.positionSS.x;
+    screenSpacePos.y = flipY ? 1.0 - posInput.positionSS.y : posInput.positionSS.y;
+
+    float4 positionCS   = float4(screenSpacePos * 2.0 - 1.0, depthRaw, 1.0);
     float4 hpositionWS  = mul(invViewProjMatrix, positionCS);
     posInput.positionWS = hpositionWS.xyz / hpositionWS.w;
 
     // The compiler should optimize this (less expensive than reconstruct depth VS from depth buffer)
     posInput.depthVS = mul(viewProjMatrix, float4(posInput.positionWS, 1.0)).w;
+}
+
+// It may be necessary to flip the Y axis as the origin of the screen-space coordinate system
+// of Direct3D is at the top left corner of the screen, with the Y axis pointing downwards.
+float3 ComputeViewSpacePosition(float2 positionSS, float depthRaw, float4x4 invProjMatrix, bool flipY = false)
+{
+    float2 screenSpacePos;
+    screenSpacePos.x = positionSS.x;
+    screenSpacePos.y = flipY ? 1.0 - positionSS.y : positionSS.y;
+
+    float4 positionCS = float4(screenSpacePos * 2.0 - 1.0, depthRaw, 1.0);
+    float4 positionVS = mul(invProjMatrix, positionCS);
+    // The view space uses a right-handed coordinate system.
+    positionVS.z = -positionVS.z;
+    return positionVS.xyz / positionVS.w;
 }
 
 // The view direction 'V' points towards the camera.
@@ -565,7 +554,7 @@ void ApplyDepthOffsetPositionInput(float3 V, float depthOffsetVS, float4x4 viewP
 
 // Generates a triangle in homogeneous clip space, s.t.
 // v0 = (-1, -1, 1), v1 = (3, -1, 1), v2 = (-1, 3, 1).
-float2 GetFullScreenTriangleTexCoord(uint vertexID)
+float2 GetFullScreenTriangleTexcoord(uint vertexID)
 {
 #if UNITY_UV_STARTS_AT_TOP
     return float2((vertexID << 1) & 2, 1.0 - (vertexID & 2));

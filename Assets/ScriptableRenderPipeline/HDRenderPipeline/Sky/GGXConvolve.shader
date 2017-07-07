@@ -7,7 +7,6 @@ Shader "Hidden/HDRenderPipeline/GGXConvolve"
             ZWrite Off
             ZTest Always
             Blend One Zero
-            Cull Off
 
             HLSLPROGRAM
             #pragma target 4.5
@@ -37,8 +36,7 @@ Shader "Hidden/HDRenderPipeline/GGXConvolve"
             Varyings Vert(Attributes input)
             {
                 Varyings output;
-                // Unity renders upside down, so the clip space coordinates have to be flipped.
-                output.positionCS = float4(input.positionCS.x, -input.positionCS.y, UNITY_RAW_FAR_CLIP_VALUE, 1.0);
+                output.positionCS = float4(input.positionCS.xy, UNITY_RAW_FAR_CLIP_VALUE, 1.0);
                 output.eyeVector = input.eyeVector;
                 return output;
             }
@@ -57,7 +55,7 @@ Shader "Hidden/HDRenderPipeline/GGXConvolve"
             float _LastLevel;
             float _InvOmegaP;
 
-            float4 Frag(Varyings input) : SV_Target
+            half4 Frag(Varyings input) : SV_Target
             {
                 // Vector interpolation is not magnitude-preserving.
                 float3 N = normalize(input.eyeVector);

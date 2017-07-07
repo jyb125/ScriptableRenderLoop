@@ -40,7 +40,6 @@ Shader "HDRenderPipeline/Unlit"
 
     #pragma target 4.5
     #pragma only_renderers d3d11 ps4 metal  // TEMP: until we go further in dev
-    // #pragma enable_d3d11_debug_symbols
 
     //-------------------------------------------------------------------------------------
     // Variant

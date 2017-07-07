@@ -119,8 +119,6 @@ VaryingsMeshType VertMesh(AttributesMesh input)
     ApplyWind(positionWS, normalWS, rootWP, _Stiffness, _Drag, _ShiverDrag, _ShiverDirectionality, _InitialBend, vertexColor.a, _Time);
 #endif
 
-    positionWS = GetCameraRelativePositionWS(positionWS);
-
 #ifdef TESSELLATION_ON
     output.positionWS = positionWS;
     #ifdef _TESSELLATION_OBJECT_SCALE

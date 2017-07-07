@@ -36,7 +36,7 @@ PackedVaryingsToPS Vert(AttributesMesh inputMesh)
     // position, so also take this opportunity to create a dependence on it.
     inputMesh.positionOS.z = inputMesh.positionOS.z > 0 ? 1.0e-4 : 0.0;
 
-    float3 positionWS = GetCameraRelativePositionWS(TransformObjectToWorld(inputMesh.positionOS));
+    float3 positionWS = TransformObjectToWorld(inputMesh.positionOS);
     output.vmesh.positionCS = TransformWorldToHClip(positionWS);
     output.vmesh.texCoord0 = inputMesh.uv0;
     output.vmesh.texCoord1 = inputMesh.uv1;
@@ -79,8 +79,9 @@ float4 Frag(PackedVaryingsToPS packedInput) : SV_Target
 
     if (unity_MetaFragmentControl.y)
     {
-        // emissive use HDR format
-        res = float4(lightTransportData.emissiveColor, 1.0);
+        // TODO: THIS LIMIT MUST BE REMOVE, IT IS NOT HDR, change when RGB9e5 is here.
+        // Do we assume here that emission is [0..1] ?
+        res = PackEmissiveRGBM(lightTransportData.emissiveColor);
     }
 
     return res;

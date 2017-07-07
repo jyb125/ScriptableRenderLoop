@@ -38,7 +38,7 @@ Shader "Hidden/HDRenderPipeline/DebugFullScreen"
             {
                 Varyings output;
                 output.positionCS = GetFullScreenTriangleVertexPosition(input.vertexID);
-                output.texcoord   = GetFullScreenTriangleTexCoord(input.vertexID);
+                output.texcoord   = GetFullScreenTriangleTexcoord(input.vertexID);
 
                 return output;
             }

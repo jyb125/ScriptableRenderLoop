@@ -288,7 +288,6 @@ namespace UnityEngine.Experimental.Rendering
         {
 #if UNITY_EDITOR
             // Grab reference to input manager
-            var currentSelection = UnityEditor.Selection.activeObject;
             UnityEditor.EditorApplication.ExecuteMenuItem("Edit/Project Settings/Input");
             var inputManager = UnityEditor.Selection.activeObject;
 
@@ -313,8 +312,6 @@ namespace UnityEngine.Experimental.Rendering
 
             // Commit
             soInputManager.ApplyModifiedProperties();
-
-            UnityEditor.Selection.activeObject = currentSelection;
 #endif
         }
 

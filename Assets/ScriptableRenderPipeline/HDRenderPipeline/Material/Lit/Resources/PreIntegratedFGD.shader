@@ -14,32 +14,32 @@ Shader "Hidden/HDRenderPipeline/PreIntegratedFGD"
             #include "../../../../ShaderLibrary/ImageBasedLighting.hlsl"
             #include "../../../ShaderVariables.hlsl"
 
+
             struct Attributes
             {
-                uint vertexID : SV_VertexID;
+                float3 vertex : POSITION;
+                float2 texcoord : TEXCOORD0;
             };
 
             struct Varyings
             {
-                float4 positionCS : SV_POSITION;
-                float2 texCoord   : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+                float2 texcoord : TEXCOORD0;
             };
 
             Varyings Vert(Attributes input)
             {
                 Varyings output;
-
-                output.positionCS = GetFullScreenTriangleVertexPosition(input.vertexID);
-                output.texCoord   = GetFullScreenTriangleTexCoord(input.vertexID);
-
+                output.vertex = TransformWorldToHClip(input.vertex);
+                output.texcoord = input.texcoord.xy;
                 return output;
             }
 
             float4 Frag(Varyings input) : SV_Target
             {
                 // These coordinate sampling must match the decoding in GetPreIntegratedDFG in lit.hlsl, i.e here we use perceptualRoughness, must be the same in shader
-                float NdotV                 = input.texCoord.x;
-                float perceptualRoughness   = input.texCoord.y;
+                float NdotV                 = input.texcoord.x;
+                float perceptualRoughness   = input.texcoord.y;
                 float3 V                    = float3(sqrt(1 - NdotV * NdotV), 0, NdotV);
                 float3 N                    = float3(0.0, 0.0, 1.0);
 

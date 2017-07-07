@@ -51,58 +51,76 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         // Render Target Management.
         public const ClearFlag kClearAll = ClearFlag.ClearDepth | ClearFlag.ClearColor;
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier buffer, ClearFlag clearFlag, Color clearColor, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier buffer, ClearFlag clearFlag, Color clearColor, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
         {
+            var cmd = CommandBufferPool.Get();
+            cmd.name = "";
             cmd.SetRenderTarget(buffer, miplevel, cubemapFace);
             if (clearFlag != ClearFlag.ClearNone)
                 cmd.ClearRenderTarget((clearFlag & ClearFlag.ClearDepth) != 0, (clearFlag & ClearFlag.ClearColor) != 0, clearColor);
+            renderContext.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier buffer, ClearFlag clearFlag = ClearFlag.ClearNone, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier buffer, ClearFlag clearFlag = ClearFlag.ClearNone, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
         {
-            SetRenderTarget(cmd, buffer, clearFlag, Color.black, miplevel, cubemapFace);
+            SetRenderTarget(renderContext, buffer, clearFlag, Color.black, miplevel, cubemapFace);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthBuffer, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthBuffer, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
         {
-            SetRenderTarget(cmd, colorBuffer, depthBuffer, ClearFlag.ClearNone, Color.black, miplevel, cubemapFace);
+            SetRenderTarget(renderContext, colorBuffer, depthBuffer, ClearFlag.ClearNone, Color.black, miplevel, cubemapFace);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
         {
-            SetRenderTarget(cmd, colorBuffer, depthBuffer, clearFlag, Color.black, miplevel, cubemapFace);
+            SetRenderTarget(renderContext, colorBuffer, depthBuffer, clearFlag, Color.black, miplevel, cubemapFace);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag, Color clearColor, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag, Color clearColor, int miplevel = 0, CubemapFace cubemapFace = CubemapFace.Unknown)
         {
+            var cmd = CommandBufferPool.Get();
+            cmd.name = "";
             cmd.SetRenderTarget(colorBuffer, depthBuffer, miplevel, cubemapFace);
             if (clearFlag != ClearFlag.ClearNone)
                 cmd.ClearRenderTarget((clearFlag & ClearFlag.ClearDepth) != 0, (clearFlag & ClearFlag.ClearColor) != 0, clearColor);
+            renderContext.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthBuffer)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthBuffer)
         {
-            SetRenderTarget(cmd, colorBuffers, depthBuffer, ClearFlag.ClearNone, Color.black);
+            SetRenderTarget(renderContext, colorBuffers, depthBuffer, ClearFlag.ClearNone, Color.black);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag = ClearFlag.ClearNone)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag = ClearFlag.ClearNone)
         {
-            SetRenderTarget(cmd, colorBuffers, depthBuffer, clearFlag, Color.black);
+            SetRenderTarget(renderContext, colorBuffers, depthBuffer, clearFlag, Color.black);
         }
 
-        public static void SetRenderTarget(CommandBuffer cmd, RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag, Color clearColor)
+        public static void SetRenderTarget(ScriptableRenderContext renderContext, RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthBuffer, ClearFlag clearFlag, Color clearColor)
         {
+            var cmd = CommandBufferPool.Get();
+            cmd.name = "";
             cmd.SetRenderTarget(colorBuffers, depthBuffer);
             if (clearFlag != ClearFlag.ClearNone)
                 cmd.ClearRenderTarget((clearFlag & ClearFlag.ClearDepth) != 0, (clearFlag & ClearFlag.ClearColor) != 0, clearColor);
+            renderContext.ExecuteCommandBuffer(cmd);
+            
         }
 
-        public static void ClearCubemap(CommandBuffer cmd, RenderTargetIdentifier buffer, Color clearColor)
+        public static void ClearCubemap(ScriptableRenderContext renderContext, RenderTargetIdentifier buffer, Color clearColor)
         {
+            var cmd = CommandBufferPool.Get();
+            cmd.name = "";
+
             for(int i = 0 ; i < 6 ; ++i)
             {
-                SetRenderTarget(cmd, buffer, ClearFlag.ClearColor, Color.black, 0, (CubemapFace)i);
+                SetRenderTarget(renderContext, buffer, ClearFlag.ClearColor, Color.black, 0, (CubemapFace)i);
             }
+
+            renderContext.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
         }
 
         // Miscellanous
@@ -180,18 +198,23 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         public struct ProfilingSample
             : IDisposable
         {
-            bool            disposed;
-            CommandBuffer   cmd;
-            string          name;
+            bool        disposed;
+            ScriptableRenderContext  renderContext;
+            string      name;
 
-            public ProfilingSample(string _name, CommandBuffer _cmd)
+            public ProfilingSample(string _name, ScriptableRenderContext _renderloop)
             {
-                cmd = _cmd;
+                renderContext = _renderloop;
                 disposed = false;
                 name = _name;
-                cmd.BeginSample(name);
-            }
 
+                CommandBuffer cmd = CommandBufferPool.Get();
+                cmd.name = "";
+                cmd.BeginSample(name);
+                renderContext.ExecuteCommandBuffer(cmd);
+                CommandBufferPool.Release(cmd);
+            }
+            
             public void Dispose()
             {
                 Dispose(true);
@@ -205,7 +228,11 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
 
                 if (disposing)
                 {
+                    CommandBuffer cmd = CommandBufferPool.Get();
+                    cmd.name = "";
                     cmd.EndSample(name);
+                    renderContext.ExecuteCommandBuffer(cmd);
+                    CommandBufferPool.Release(cmd);
                 }
 
                 disposed = true;
@@ -220,6 +247,45 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             var gpuVP = gpuProj *  worldToViewMatrix * Matrix4x4.Scale(new Vector3(1.0f, 1.0f, -1.0f)); // Need to scale -1.0 on Z to match what is being done in the camera.wolrdToCameraMatrix API.
 
             return gpuVP;
+        }
+
+        // TEMP: These functions should be implemented C++ side, for now do it in C#
+        static List<float> m_FloatListdata = new List<float>();
+        public static void SetMatrixCS(CommandBuffer cmd, ComputeShader shadercs, string name, Matrix4x4 mat)
+        {
+            m_FloatListdata.Clear();
+
+            for (int c = 0; c < 4; c++)
+                for (int r = 0; r < 4; r++)
+                    m_FloatListdata.Add(mat[r, c]);
+
+            cmd.SetComputeFloatParams(shadercs, name, m_FloatListdata);
+        }
+
+        public static void SetMatrixArrayCS(CommandBuffer cmd, ComputeShader shadercs, string name, Matrix4x4[] matArray)
+        {
+            int numMatrices = matArray.Length;
+
+            m_FloatListdata.Clear();
+            
+            for (int n = 0; n < numMatrices; n++)
+                for (int c = 0; c < 4; c++)
+                    for (int r = 0; r < 4; r++)
+                        m_FloatListdata.Add(matArray[n][r, c]);
+
+            cmd.SetComputeFloatParams(shadercs, name, m_FloatListdata);
+        }
+
+        public static void SetVectorArrayCS(CommandBuffer cmd, ComputeShader shadercs, string name, Vector4[] vecArray)
+        {
+            int numVectors = vecArray.Length;
+            m_FloatListdata.Clear();
+
+            for (int n = 0; n < numVectors; n++)
+                for (int i = 0; i < 4; i++)
+                    m_FloatListdata.Add(vecArray[n][i]);
+
+            cmd.SetComputeFloatParams(shadercs, name, m_FloatListdata);
         }
 
         public static void SetKeyword(Material m, string keyword, bool state)
@@ -250,35 +316,38 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         }
 
         // Draws a full screen triangle as a faster alternative to drawing a full screen quad.
-        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material,
+        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material, HDCamera camera,
             RenderTargetIdentifier colorBuffer,
             MaterialPropertyBlock properties = null, int shaderPassID = 0)
         {
+            camera.SetupMaterial(material);
             commandBuffer.SetRenderTarget(colorBuffer);
             commandBuffer.DrawProcedural(Matrix4x4.identity, material, shaderPassID, MeshTopology.Triangles, 3, 1, properties);
         }
 
         // Draws a full screen triangle as a faster alternative to drawing a full screen quad.
-        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material,
+        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material, HDCamera camera,
             RenderTargetIdentifier colorBuffer, RenderTargetIdentifier depthStencilBuffer,
             MaterialPropertyBlock properties = null, int shaderPassID = 0)
         {
+            camera.SetupMaterial(material);
             commandBuffer.SetRenderTarget(colorBuffer, depthStencilBuffer);
             commandBuffer.DrawProcedural(Matrix4x4.identity, material, shaderPassID, MeshTopology.Triangles, 3, 1, properties);
         }
 
         // Draws a full screen triangle as a faster alternative to drawing a full screen quad.
-        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material,
+        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material, HDCamera camera,
             RenderTargetIdentifier[] colorBuffers, RenderTargetIdentifier depthStencilBuffer,
             MaterialPropertyBlock properties = null, int shaderPassID = 0)
         {
+            camera.SetupMaterial(material);
             commandBuffer.SetRenderTarget(colorBuffers, depthStencilBuffer);
             commandBuffer.DrawProcedural(Matrix4x4.identity, material, shaderPassID, MeshTopology.Triangles, 3, 1, properties);
         }
 
         // Draws a full screen triangle as a faster alternative to drawing a full screen quad.
         // Important: the first RenderTarget must be created with 0 depth bits!
-        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material,
+        public static void DrawFullScreen(CommandBuffer commandBuffer, Material material, HDCamera camera,
             RenderTargetIdentifier[] colorBuffers,
             MaterialPropertyBlock properties = null, int shaderPassID = 0)
         {
@@ -286,7 +355,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             // To work around this deficiency of the CommandBuffer.SetRenderTarget() API,
             // we pass the first color target as the depth target. If it has 0 depth bits,
             // no depth target ends up being bound.
-            DrawFullScreen(commandBuffer, material, colorBuffers, colorBuffers[0], properties, shaderPassID);
+            DrawFullScreen(commandBuffer, material, camera, colorBuffers, colorBuffers[0], properties, shaderPassID);
         }
 
         // Helper to help to display debug info on screen
@@ -301,47 +370,6 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                 x = 0;
                 y -= overlayLineHeight;
                 overlayLineHeight = -1.0f;
-            }
-        }
-
-        // Just a sort function that doesn't allocate memory
-        // Note: Shoud be repalc by a radix sort for positive integer
-        static public int Partition(uint[] numbers, int left, int right)
-        {
-            uint pivot = numbers[left];
-            while (true)
-            {
-                while (numbers[left] < pivot)
-                    left++;
-
-                while (numbers[right] > pivot)
-                    right--;
-
-                if (left < right)
-                {
-                    uint temp = numbers[right];
-                    numbers[right] = numbers[left];
-                    numbers[left] = temp;
-                }
-                else
-                {
-                    return right;
-                }
-            }
-        }
-
-        static public void QuickSort(uint[] arr, int left, int right)
-        {
-            // For Recusrion
-            if (left < right)
-            {
-                int pivot = Partition(arr, left, right);
-
-                if (pivot > 1)
-                    QuickSort(arr, left, pivot - 1);
-
-                if (pivot + 1 < right)
-                    QuickSort(arr, pivot + 1, right);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using UnityEngine.Rendering;
+using UnityEngine.Rendering;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 using System;
 
@@ -38,7 +38,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             get { return m_SupportMIS; }
         }
 
-        public void Initialize(CommandBuffer cmd)
+        public void Initialize(ScriptableRenderContext context)
         {
             if (!m_ComputeGgxIblSampleDataCS)
             {
@@ -69,14 +69,14 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
 
                 m_ComputeGgxIblSampleDataCS.SetTexture(m_ComputeGgxIblSampleDataKernel, "output", m_GgxIblSampleData);
 
-                using (new Utilities.ProfilingSample("Compute GGX IBL Sample Data", cmd))
-                {
+                var cmd = CommandBufferPool.Get("Compute GGX IBL Sample Data");
                 cmd.DispatchCompute(m_ComputeGgxIblSampleDataCS, m_ComputeGgxIblSampleDataKernel, 1, 1, 1);
-                }
+                context.ExecuteCommandBuffer(cmd);
+                CommandBufferPool.Release(cmd);
             }
         }
 
-        void FilterCubemapCommon(CommandBuffer cmd,
+        void FilterCubemapCommon(ScriptableRenderContext context,
             Texture source, RenderTexture target, int mipCount,
             Mesh[] cubemapFaceMesh)
         {
@@ -90,34 +90,33 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
 
             for (int mip = 1; mip < ((int)EnvConstants.SpecCubeLodStep + 1); ++mip)
             {
-                string sampleName = String.Format("Filter Cubemap Mip {0}", mip);
-                cmd.BeginSample(sampleName);
-
                 MaterialPropertyBlock props = new MaterialPropertyBlock();
                 props.SetFloat("_Level", mip);
 
                 for (int face = 0; face < 6; ++face)
                 {
-                    Utilities.SetRenderTarget(cmd, target, ClearFlag.ClearNone, mip, (CubemapFace)face);
+                    Utilities.SetRenderTarget(context, target, ClearFlag.ClearNone, mip, (CubemapFace)face);
 
+                    var cmd = CommandBufferPool.Get();
                     cmd.DrawMesh(cubemapFaceMesh[face], Matrix4x4.identity, m_GgxConvolveMaterial, 0, 0, props);
+                    context.ExecuteCommandBuffer(cmd);
+                    CommandBufferPool.Release(cmd);
                 }
-                cmd.EndSample(sampleName);
             }
         }
 
         // Filters MIP map levels (other than 0) with GGX using BRDF importance sampling.
-        public void FilterCubemap(CommandBuffer cmd,
+        public void FilterCubemap(ScriptableRenderContext context,
             Texture source, RenderTexture target, int mipCount,
             Mesh[] cubemapFaceMesh)
         {
             m_GgxConvolveMaterial.DisableKeyword("USE_MIS");
 
-            FilterCubemapCommon(cmd, source, target, mipCount, cubemapFaceMesh);
+            FilterCubemapCommon(context, source, target, mipCount, cubemapFaceMesh);
         }
 
         // Filters MIP map levels (other than 0) with GGX using multiple importance sampling.
-        public void FilterCubemapMIS(CommandBuffer cmd,
+        public void FilterCubemapMIS(ScriptableRenderContext context,
             Texture source, RenderTexture target, int mipCount,
             RenderTexture conditionalCdf, RenderTexture marginalRowCdf,
             Mesh[] cubemapFaceMesh)
@@ -132,17 +131,17 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
 
             int numRows = conditionalCdf.height;
 
-            using (new Utilities.ProfilingSample("Build Probability Tables", cmd))
-            {
+            var cmd = CommandBufferPool.Get("Build Probability Tables");
             cmd.DispatchCompute(m_BuildProbabilityTablesCS, m_ConditionalDensitiesKernel, numRows, 1, 1);
             cmd.DispatchCompute(m_BuildProbabilityTablesCS, m_MarginalRowDensitiesKernel, 1, 1, 1);
-            }
+            context.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
 
             m_GgxConvolveMaterial.EnableKeyword("USE_MIS");
             m_GgxConvolveMaterial.SetTexture("_ConditionalDensities", conditionalCdf);
             m_GgxConvolveMaterial.SetTexture("_MarginalRowDensities", marginalRowCdf);
 
-            FilterCubemapCommon(cmd, source, target, mipCount, cubemapFaceMesh);
+            FilterCubemapCommon(context, source, target, mipCount, cubemapFaceMesh);
         }
     }
 }
