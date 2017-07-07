@@ -29,12 +29,6 @@
 #include "Unlit/Unlit.hlsl"
 #elif defined(UNITY_MATERIAL_IRIDESCENCE)
 //#include "Iridescence/Iridescence.hlsl"
-#elif defined(UNITY_MATERIAL_HAIR)
-#include "Hair/Hair.hlsl"
-#elif defined(UNITY_MATERIAL_EYE)
-#include "Eye/Eye.hlsl"
-#elif defined(UNITY_MATERIAL_FABRIC)
-#include "Fabric/Fabric.hlsl"
 #endif
 
 //-----------------------------------------------------------------------------
