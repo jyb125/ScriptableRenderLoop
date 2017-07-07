@@ -88,7 +88,7 @@ Shader "HDRenderPipeline/ExperimentalFabric"
         _TexWorldScale("Scale to apply on world coordinate", Float) = 1.0
         [HideInInspector] _UVMappingMask("_UVMappingMask", Color) = (1, 0, 0, 0)
         [Enum(TangentSpace, 0, ObjectSpace, 1)] _NormalMapSpace("NormalMap space", Float) = 0
-        [HideInInspector]_MaterialID("MaterialId", Int) = 1 // MaterialId.RegularLighting
+        [HideInInspector]_MaterialID("MaterialId", Int) = 0 // MaterialId.Subsurface
 
 
         [ToggleOff]  _EnablePerPixelDisplacement("Enable per pixel displacement", Float) = 0.0
