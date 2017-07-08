@@ -27,7 +27,7 @@ Shader "HDRenderPipeline/ExperimentalFabric"
 
         _DetailMap("DetailMap", 2D) = "black" {}
         _DetailMask("DetailMask", 2D) = "white" {}
-        _DetailAlbedoScale("_DetailAlbedoScale", Range(-2.0, 2.0)) = 1
+        _DetailAlbedoScale("_DetailAlbedoScale", Range(0.0, 2.0)) = 1
         _DetailNormalScale("_DetailNormalScale", Range(0.0, 2.0)) = 1
         _DetailSmoothnessScale("_DetailSmoothnessScale", Range(-2.0, 2.0)) = 1
 
