@@ -39,7 +39,8 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
 
             public static string textureControlText = "Input textures control";
             public static GUIContent UVBaseMappingText = new GUIContent("Base UV mapping", "");
-            public static GUIContent texWorldScaleText = new GUIContent("World scale", "Tiling factor applied to Planar/Trilinear mapping");
+			public static GUIContent UVHeightMappingText = new GUIContent("Height UV mapping", "");
+			public static GUIContent texWorldScaleText = new GUIContent("World scale", "Tiling factor applied to Planar/Trilinear mapping");
 
             // Details
             public static string detailText = "Inputs Detail";
@@ -81,6 +82,13 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
             Planar,
             Triplanar
         }
+
+		public enum UVHeightMapping
+		{
+			UV0,
+			Planar,
+			Triplanar
+		}
 
         public enum NormalMapSpace
         {
@@ -290,8 +298,6 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
 
             m_MaterialEditor.ShaderProperty(subsurfaceRadius, Styles.subsurfaceRadiusText);
             m_MaterialEditor.TexturePropertySingleLine(Styles.subsurfaceRadiusMapText, subsurfaceRadiusMap);
-            m_MaterialEditor.ShaderProperty(thickness, Styles.thicknessText);
-            m_MaterialEditor.TexturePropertySingleLine(Styles.thicknessMapText, thicknessMap);
         }
 
         protected void ShaderStandardInputGUI()
@@ -364,6 +370,7 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                 EditorGUI.indentLevel--;
             }
 
+            ShaderSSSInputGUI(material); /*
             switch ((Lit.MaterialId)materialID.floatValue)
             {
                 case Lit.MaterialId.LitSSS:
@@ -378,7 +385,7 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                 default:
                     Debug.Assert(false, "Encountered an unsupported MaterialID.");
                     break;
-            }
+            }*/
 
             EditorGUILayout.Space();
             GUILayout.Label("    " + Styles.textureControlText, EditorStyles.label);

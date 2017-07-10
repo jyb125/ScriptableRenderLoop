@@ -229,7 +229,7 @@ float4 EncodeSplitLightingGBuffer0(SurfaceData surfaceData)
 
 float4 EncodeSplitLightingGBuffer1(SurfaceData surfaceData)
 {
-	return float4(1.0, 1.0, 0.0, PackByte(2)); //TODO: Fabric UI
+	return float4(surfaceData.subsurfaceRadius, 1.0, 0.0, PackByte(surfaceData.subsurfaceProfile)); //TODO: Fabric UI
 }
 
 //-----------------------------------------------------------------------------
