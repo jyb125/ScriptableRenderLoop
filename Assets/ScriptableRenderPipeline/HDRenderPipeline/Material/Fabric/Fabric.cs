@@ -1,9 +1,28 @@
-﻿using UnityEngine.Rendering;
+using UnityEngine.Rendering;
 
 namespace UnityEngine.Experimental.Rendering.HDPipeline
 {
     public partial class Fabric : RenderPipelineMaterial
     {
+        [GenerateHLSL(PackingRules.Exact)]
+        public enum MaterialId
+        {
+            LitSSS = 0,
+            LitStandard = 1,
+            LitUnused0 = 2,
+            LitUnused1 = 3,
+            LitAniso = 4, // Should be the last as it is not setup by the users but generated based on anisotropy property
+            LitSpecular = 5, // Should be the last as it is not setup by the users but generated based on anisotropy property and specular
+        };
+
+        [GenerateHLSL]
+        public enum MaterialFeatureFlags
+        {
+            LitSSS = 1 << 12,
+            LitStandard = 1 << 13,
+            LitAniso = 1 << 14,
+            LitSpecular = 1 << 15
+        }
 
         //-----------------------------------------------------------------------------
         // SurfaceData
@@ -22,6 +41,8 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             public Vector3 normalWS;
             [SurfaceDataAttributes("Smoothness")]
             public float perceptualSmoothness;
+            [SurfaceDataAttributes("Material ID")]
+            public int materialId;
 
             [SurfaceDataAttributes("Ambient Occlusion")]
             public float ambientOcclusion;
@@ -73,6 +94,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             public Vector3 normalWS;
             public float perceptualRoughness;
             public float roughness;
+            public int materialId;
 
             // standard
             [SurfaceDataAttributes("", true)]
