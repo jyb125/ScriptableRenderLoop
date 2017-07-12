@@ -5,7 +5,7 @@
 #ifndef HAIR_CS_HLSL
 #define HAIR_CS_HLSL
 //
-// UnityEngine.Experimental.Rendering.HDPipeline.Hair.SurfaceData:  static fields
+// UnityEngine.Experimental.Rendering.HDPipeline.Hair+SurfaceData:  static fields
 //
 #define DEBUGVIEW_HAIR_SURFACEDATA_DIFFUSE_COLOR (2570)
 #define DEBUGVIEW_HAIR_SURFACEDATA_SPECULAR_OCCLUSION (2571)
@@ -17,7 +17,7 @@
 #define DEBUGVIEW_HAIR_SURFACEDATA_IS_FRONT_FACE (2577)
 
 //
-// UnityEngine.Experimental.Rendering.HDPipeline.Hair.BSDFData:  static fields
+// UnityEngine.Experimental.Rendering.HDPipeline.Hair+BSDFData:  static fields
 //
 #define DEBUGVIEW_HAIR_BSDFDATA_DIFFUSE_COLOR (2600)
 #define DEBUGVIEW_HAIR_BSDFDATA_FRESNEL0 (2601)
@@ -32,7 +32,7 @@
 #define DEBUGVIEW_HAIR_BSDFDATA_ANISOTROPY (2610)
 #define DEBUGVIEW_HAIR_BSDFDATA_IS_FRONT_FACE (2611)
 
-// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Hair.SurfaceData
+// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Hair+SurfaceData
 // PackingRules = Exact
 struct SurfaceData
 {
@@ -46,7 +46,7 @@ struct SurfaceData
     bool isFrontFace;
 };
 
-// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Hair.BSDFData
+// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Hair+BSDFData
 // PackingRules = Exact
 struct BSDFData
 {

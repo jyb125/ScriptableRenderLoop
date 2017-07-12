@@ -22,7 +22,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             public Vector3 normalWS;
             [SurfaceDataAttributes("Smoothness")]
             public float perceptualSmoothness;
-            
+
             [SurfaceDataAttributes("Ambient Occlusion")]
             public float ambientOcclusion;
 
@@ -73,7 +73,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             public Vector3 normalWS;
             public float perceptualRoughness;
             public float roughness;
-            
+
             // standard
             [SurfaceDataAttributes("", true)]
             public Vector3 tangentWS;
@@ -241,17 +241,15 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             m_isInit = false;
         }
 
-        public override void RenderInit(Rendering.ScriptableRenderContext renderContext)
+        public override void RenderInit(CommandBuffer cmd)
         {
             if (m_isInit)
                 return;
 
-            var cmd = new CommandBuffer();
-            cmd.name = "Init PreFGD";
-            cmd.Blit(null, new RenderTargetIdentifier(m_PreIntegratedFGD), m_InitPreFGD, 0);
-            renderContext.ExecuteCommandBuffer(cmd);
-            cmd.Dispose();
-
+            using (new Utilities.ProfilingSample("Init PreFGD", cmd))
+            {
+                Utilities.DrawFullScreen(cmd, m_InitPreFGD, new RenderTargetIdentifier(m_PreIntegratedFGD));
+            }
             m_isInit = true;
         }
 

@@ -5,14 +5,14 @@
 #ifndef CHARACTER_CS_HLSL
 #define CHARACTER_CS_HLSL
 //
-// UnityEngine.Experimental.Rendering.HDPipeline.Character.CharacterMaterialID:  static fields
+// UnityEngine.Experimental.Rendering.HDPipeline.Character+CharacterMaterialID:  static fields
 //
 #define CHARACTERMATERIALID_SKIN (0)
 #define CHARACTERMATERIALID_HAIR (1)
 #define CHARACTERMATERIALID_EYE (2)
 
 //
-// UnityEngine.Experimental.Rendering.HDPipeline.Character.SurfaceData:  static fields
+// UnityEngine.Experimental.Rendering.HDPipeline.Character+SurfaceData:  static fields
 //
 #define DEBUGVIEW_CHARACTER_SURFACEDATA_DIFFUSE_COLOR (4000)
 #define DEBUGVIEW_CHARACTER_SURFACEDATA_SPECULAR_OCCLUSION (4001)
@@ -23,7 +23,7 @@
 #define DEBUGVIEW_CHARACTER_SURFACEDATA_ANISOTROPY (4006)
 
 //
-// UnityEngine.Experimental.Rendering.HDPipeline.Character.BSDFData:  static fields
+// UnityEngine.Experimental.Rendering.HDPipeline.Character+BSDFData:  static fields
 //
 #define DEBUGVIEW_CHARACTER_BSDFDATA_DIFFUSE_COLOR (4030)
 #define DEBUGVIEW_CHARACTER_BSDFDATA_FRESNEL0 (4031)
@@ -37,7 +37,7 @@
 #define DEBUGVIEW_CHARACTER_BSDFDATA_ROUGHNESS_B (4039)
 #define DEBUGVIEW_CHARACTER_BSDFDATA_ANISOTROPY (4040)
 
-// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Character.SurfaceData
+// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Character+SurfaceData
 // PackingRules = Exact
 struct SurfaceData
 {
@@ -50,7 +50,7 @@ struct SurfaceData
     float anisotropy;
 };
 
-// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Character.BSDFData
+// Generated from UnityEngine.Experimental.Rendering.HDPipeline.Character+BSDFData
 // PackingRules = Exact
 struct BSDFData
 {
