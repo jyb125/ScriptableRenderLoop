@@ -11,6 +11,11 @@ There's a more detailed overview document here: [ScriptableRenderLoop google doc
 
 Did we mention it's a very WIP, no promises, may or might not ship feature, anything and everything in it can change? It totally is.
 
+## For Unity 2017.1 beta users
+SRP depends on PostProcessing submodule. Perform the following instructions to get a working copy of SRP:
+* git clone https://github.com/Unity-Technologies/ScriptableRenderLoop
+* git checkout unity-2017.1b5 (or the latest tag)
+* git submodule update --init --recursive --remote
 
 ## For Unity 5.6 beta users
 
